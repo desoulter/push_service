@@ -43,6 +43,8 @@ init({AppId, Debug}) ->
   Timeout = proplists:get_value(timeout, Config, 30000),
   FeedbackTimeout = proplists:get_value(feedback_timeout, Config, 600000),
 
+  ExtraSslOpts = proplists:get_value(extra_ssl_opts, Config, []),
+
   CertDir = proplists:get_value(cert_dir, Config, "etc/apn"),
 
   CertName = case Debug of
@@ -75,7 +77,8 @@ init({AppId, Debug}) ->
         feedback_fun = FeedbackFun,
         error_fun = ErrorFun,
         timeout = Timeout,
-        feedback_timeout = FeedbackTimeout
+        feedback_timeout = FeedbackTimeout,
+        extra_ssl_opts = ExtraSslOpts
       },
       case apns_connection:start_link(Connection) of
         {ok, Pid} -> {ok, #state{ conn = Pid }};
