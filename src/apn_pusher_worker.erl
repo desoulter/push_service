@@ -39,10 +39,6 @@ init({AppId, Debug}) ->
   end,
 
   Self = self(),
-  ConnectionErrorFun = fun(Conn) ->
-    error_logger:info_msg("APNS disconnected. Connection: ~p~n", [Conn]),
-    stop
-  end,
 
   Timeout = proplists:get_value(timeout, Config, 30000),
   FeedbackTimeout = proplists:get_value(feedback_timeout, Config, 600000),
@@ -78,7 +74,6 @@ init({AppId, Debug}) ->
         feedback_host = feedback_host(Debug),
         feedback_fun = FeedbackFun,
         error_fun = ErrorFun,
-        connection_error_fun = ConnectionErrorFun,
         timeout = Timeout,
         feedback_timeout = FeedbackTimeout
       },
