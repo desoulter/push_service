@@ -93,11 +93,11 @@ init({AppId, Debug}) ->
 
 handle_call({send, Token, Message}, _From, #state{conn = C} = State)
     when is_record(Message, message) ->
-  apns:send_sync_message(C, get_message(Message, Token)),
+  apns:send_message(C, get_message(Message, Token)),
   {reply, ok, State};
 handle_call({send_many, Tokens, Message}, _From, #state{conn = C} = State)
     when is_record(Message, message) ->
-  [ apns:send_sync_message(C, get_message(Message, Token)) || Token <- Tokens ],
+  [ apns:send_message(C, get_message(Message, Token)) || Token <- Tokens ],
   {reply, ok, State}.
 
 
